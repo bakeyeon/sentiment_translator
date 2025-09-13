@@ -1,0 +1,5 @@
+{
+  "name": "Sentiment Translator",
+  "description": "A prototype translation app that visualizes and compares the sentiment of the original and translated text to ensure nuanced meaning is preserved.",
+  "requestFramePermissions": []
+}
