@@ -1,15 +1,23 @@
+
+# Sentiment Translator 
+Vibe coded a prototype based on my previous papers on the topic of sentiments and emojis.
+
+- Paper 1: Modalpartikeln': Can Sentiments Survive Translation with Emojis? (https://github.com/bakeyeon/Modalparticles_Emojis)
+- Paper 2: How Much Sentiment Can Be Carried by Modal Particles? (https://github.com/bakeyeon/modalparticles_sentiment_analysis)
+
+## How does this app work?
+- 📊 Nuance Analysis: It analyzes the emotional tone of both the original and translated text.
+- 🙂 At-a-glance Emojis: It assigns an emoji to each text, giving you an instant feel for the underlying sentiment.
+- 🗺️ Clickable Emotion Map: Click the emoji to see it expand, showing its position on a visual gradient map to gauge the emotional tone.
+
+Vibe-coded with Google AI Studio.
+
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/drive/1qHlnEXv7liypesvF5BK8ZhijADEwut_J
 
 ## Run Locally
-
 **Prerequisites:**  Node.js
 
 
