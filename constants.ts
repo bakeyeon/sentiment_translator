@@ -8,5 +8,6 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   { code: 'es', name: 'Spanish' },
   { code: 'fr', name: 'French' },
   { code: 'de', name: 'German' },
+  { code: 'th', name: 'Thai' },
   { code: 'zh', name: 'Chinese' },
 ];

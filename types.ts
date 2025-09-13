@@ -10,3 +10,15 @@ export interface Language {
   code: string;
   name: string;
 }
+
+export interface EmojiSuggestion {
+  explanation: string;
+  emojis: string[];
+}
+
+export interface TranslationResponse {
+  translation: string;
+  sourceSentiment: SentimentScore;
+  translatedSentiment: SentimentScore;
+  nuance?: string;
+}
