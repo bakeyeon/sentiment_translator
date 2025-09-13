@@ -83,17 +83,28 @@ export const getTranslationAndSentiment = async (
       translatedSentiment: sentimentSchema,
       nuance: {
         type: Type.STRING,
-        description: "A short explanation of any subtle nuance, cultural context, or ambiguity in the original text that might be lost in translation. This should be null or an empty string if no significant nuance is detected."
+        description: `A short explanation in ${targetLanguageName} of any subtle nuance, cultural context, or ambiguity in the original text that might be lost in translation. This should be null or an empty string if no significant nuance is detected.`
       },
+      uiTranslations: {
+        type: Type.OBJECT,
+        properties: {
+            formal: { type: Type.STRING, description: `The word for 'Formal' translated into ${targetLanguageName}.` },
+            intimate: { type: Type.STRING, description: `The word for 'Intimate' translated into ${targetLanguageName}.` },
+            negative: { type: Type.STRING, description: `The word for 'Negative' translated into ${targetLanguageName}.` },
+            positive: { type: Type.STRING, description: `The word for 'Positive' translated into ${targetLanguageName}.` },
+        },
+        required: ["formal", "intimate", "negative", "positive"]
+      }
     },
-    required: ["translation", "sourceSentiment", "translatedSentiment"],
+    required: ["translation", "sourceSentiment", "translatedSentiment", "uiTranslations"],
   };
 
   const prompt = `You are an expert linguist and cultural translator. Your task is to translate text while being highly sensitive to subtle meanings.
 1. Provide a natural and direct translation of the following text into ${targetLanguageName}. The translation should sound like it was written by a native speaker.
-2. Analyze the ORIGINAL text for any subtle nuances, culturally specific phrases, ambiguities, or emotional undertones that might be lost or altered in a direct translation. Provide a short, one-sentence explanation of this key nuance. For example, you might point out if a word has a double meaning, if the tone is sarcastic, or if a phrase is a specific cultural reference. If no significant nuance is found, return null for the nuance explanation.
+2. Analyze the ORIGINAL text for any subtle nuances, culturally specific phrases, ambiguities, or emotional undertones that might be lost or altered in a direct translation. Provide a short, one-sentence explanation of this key nuance IN ${targetLanguageName}. For example, you might point out if a word has a double meaning, if the tone is sarcastic, or if a phrase is a specific cultural reference. If no significant nuance is found, return null for the nuance explanation.
 3. For the ORIGINAL text, provide: a sentiment score (-1.0 to 1.0), an intimacy score (0-100), and a formality score (0-100).
 4. For the TRANSLATION you generated, provide: a sentiment score (-1.0 to 1.0), an intimacy score (0-100), and a formality score (0-100).
+5. Translate the following UI labels into ${targetLanguageName}: 'Formal', 'Intimate', 'Negative', 'Positive'.
 
 Provide your response strictly as a JSON object that conforms to the provided schema. Do not include any extra text or formatting.
 Original Text: "${text}"`;

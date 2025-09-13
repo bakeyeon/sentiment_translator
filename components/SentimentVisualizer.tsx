@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { Sentiment } from '../types';
+import type { Sentiment, UITranslations } from '../types';
 
 interface SentimentVisualizerProps {
   sentiment: Sentiment;
   comparisonSentiment?: Sentiment | null;
+  uiTranslations?: UITranslations | null;
 }
 
 const useOnClickOutside = <T extends HTMLElement,>(
@@ -47,7 +48,7 @@ const SentimentPoint: React.FC<{ point: Sentiment; isComparison?: boolean }> = (
 }
 
 
-export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentiment, comparisonSentiment }) => {
+export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentiment, comparisonSentiment, uiTranslations }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const visualizerRef = useRef<HTMLDivElement>(null);
 
@@ -68,8 +69,8 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
                 <div className="absolute -top-2 left-0 right-0">
                     <div className="w-full h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 rounded-full"></div>
                     <div className="flex justify-between text-[9px] text-white/70 mt-0.5 px-0.5">
-                        <span>Negative</span>
-                        <span>Positive</span>
+                        <span>{uiTranslations?.negative ?? 'Negative'}</span>
+                        <span>{uiTranslations?.positive ?? 'Positive'}</span>
                     </div>
                 </div>
 
@@ -107,8 +108,8 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
                 </div>
 
                 {/* Axis Labels */}
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] text-white/50">Formal →</span>
-                <span className="absolute top-1/2 -translate-y-1/2 -left-1.5 text-[10px] text-white/50 origin-center -rotate-90">Intimate →</span>
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] text-white/50">{uiTranslations?.formal ?? 'Formal'} →</span>
+                <span className="absolute top-1/2 -translate-y-1/2 -left-1.5 text-[10px] text-white/50 origin-center -rotate-90">{uiTranslations?.intimate ?? 'Intimate'} →</span>
             </div>
             
         </div>

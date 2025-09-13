@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { TextAreaWithSentiment } from './components/TextAreaWithSentiment';
 import { TranslateIcon, LoadingSpinner, LightbulbIcon } from './components/icons';
 import { getTranslationAndSentiment, getSentiment, getEmojiSuggestions } from './services/geminiService';
-import type { Sentiment, Language, EmojiSuggestion } from './types';
+import type { Sentiment, Language, EmojiSuggestion, UITranslations } from './types';
 import { SUPPORTED_LANGUAGES } from './constants';
 import { getEmojiForScore } from './emoji';
 import { EmojiSuggestionBox } from './components/EmojiSuggestionBox';
@@ -18,6 +18,7 @@ const App: React.FC = () => {
   const [translatedSentiment, setTranslatedSentiment] = useState<Sentiment | null>(null);
   const [emojiSuggestion, setEmojiSuggestion] = useState<EmojiSuggestion | null>(null);
   const [nuanceExplanation, setNuanceExplanation] = useState<string | null>(null);
+  const [uiTranslations, setUiTranslations] = useState<UITranslations | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isTranslatedAnalyzing, setIsTranslatedAnalyzing] = useState(false);
@@ -49,9 +50,10 @@ const App: React.FC = () => {
     setEmojiSuggestion(null);
     setNuanceExplanation(null);
     setSourceSentiment(null);
+    setUiTranslations(null);
 
     try {
-      const { translation, nuance, sourceSentiment: srcSentiment, translatedSentiment: transSentiment } = 
+      const { translation, nuance, sourceSentiment: srcSentiment, translatedSentiment: transSentiment, uiTranslations: newUiTranslations } = 
         await getTranslationAndSentiment(sourceText, sourceLanguage.code, targetLanguage.name);
       
       setSourceSentiment({ 
@@ -64,6 +66,8 @@ const App: React.FC = () => {
         emoji: getEmojiForScore(transSentiment.score)
       });
       
+      setUiTranslations(newUiTranslations);
+
       if (nuance) {
           setNuanceExplanation(nuance);
       }
@@ -99,6 +103,7 @@ const App: React.FC = () => {
         setTranslatedSentiment(null);
         setEmojiSuggestion(null);
         setNuanceExplanation(null);
+        setUiTranslations(null);
         setError(null);
     }
   };
@@ -180,6 +185,7 @@ const App: React.FC = () => {
               onChange={handleSourceTextChange}
               placeholder="Enter text to translate..."
               sentiment={sourceSentiment}
+              uiTranslations={uiTranslations}
             />
 
             {nuanceExplanation && !isLoading && (
@@ -207,6 +213,7 @@ const App: React.FC = () => {
               placeholder="Translation will appear here..."
               sentiment={translatedSentiment}
               comparisonSentiment={sourceSentiment}
+              uiTranslations={uiTranslations}
               isLoading={isLoading && !translatedText}
               isAnalyzing={isTranslatedAnalyzing}
             />

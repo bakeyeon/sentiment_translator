@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Sentiment } from '../types';
+import type { Sentiment, UITranslations } from '../types';
 import { SentimentVisualizer } from './SentimentVisualizer';
 import { LoadingSpinner } from './icons';
 
@@ -12,6 +12,7 @@ interface TextAreaWithSentimentProps {
   placeholder: string;
   sentiment: Sentiment | null;
   comparisonSentiment?: Sentiment | null;
+  uiTranslations?: UITranslations | null;
   isLoading?: boolean; // For the big overlay spinner (used for initial translation)
   isAnalyzing?: boolean; // For the small real-time analysis spinner
 }
@@ -25,6 +26,7 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
   placeholder,
   sentiment,
   comparisonSentiment,
+  uiTranslations,
   isLoading,
   isAnalyzing,
 }) => {
@@ -51,7 +53,11 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
             {isAnalyzing ? (
                  <LoadingSpinner className="w-6 h-6 animate-spin text-cyan-400"/>
             ) : sentiment && (
-                 <SentimentVisualizer sentiment={sentiment} comparisonSentiment={comparisonSentiment} />
+                 <SentimentVisualizer 
+                    sentiment={sentiment} 
+                    comparisonSentiment={comparisonSentiment} 
+                    uiTranslations={uiTranslations}
+                />
             )}
         </div>
       </div>

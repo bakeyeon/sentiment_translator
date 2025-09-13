@@ -18,9 +18,17 @@ export interface EmojiSuggestion {
   emojis: string[];
 }
 
+export interface UITranslations {
+  formal: string;
+  intimate: string;
+  negative: string;
+  positive: string;
+}
+
 export interface TranslationResponse {
   translation: string;
   sourceSentiment: SentimentScore;
   translatedSentiment: SentimentScore;
+  uiTranslations: UITranslations;
   nuance?: string;
 }
