@@ -5,7 +5,7 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - Paper 1: Modalpartikeln': Can Sentiments Survive Translation with Emojis? (https://github.com/bakeyeon/Modalparticles_Emojis)
 - Paper 2: How Much Sentiment Can Be Carried by Modal Particles? (https://github.com/bakeyeon/modalparticles_sentiment_analysis)
 
-## How does this app work?
+## Key Functions
 - 📊 Nuance Analysis: It analyzes the emotional tone of both the original and translated text.
 - 🙂 At-a-glance Emojis: It assigns an emoji to each text, giving you an instant feel for the underlying sentiment.
 - 🗺️ Clickable Emotion Map: Click the emoji to see it expand, showing its position on a visual gradient map to gauge the emotional tone.
