@@ -4,6 +4,7 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 
 - Paper 1: Modalpartikeln': Can Sentiments Survive Translation with Emojis? (https://github.com/bakeyeon/Modalparticles_Emojis)
 - Paper 2: How Much Sentiment Can Be Carried by Modal Particles? (https://github.com/bakeyeon/modalparticles_sentiment_analysis)
+- Video Overview of 2 Papers: https://youtu.be/dYcz4MZNst4
 
 ## Key Functions
 - 📊 Nuance Analysis: It analyzes the emotional tone of both the original and translated text.
