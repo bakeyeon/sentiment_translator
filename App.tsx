@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { TextAreaWithSentiment } from './components/TextAreaWithSentiment';
 import { TranslateIcon, LoadingSpinner, LightbulbIcon } from './components/icons';
@@ -19,25 +20,8 @@ const App: React.FC = () => {
   const [nuanceExplanation, setNuanceExplanation] = useState<string | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isSourceAnalyzing, setIsSourceAnalyzing] = useState(false);
   const [isTranslatedAnalyzing, setIsTranslatedAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const analyzeSourceSentiment = useCallback(async (text: string) => {
-    if (!text.trim()) {
-        setSourceSentiment(null);
-        return;
-    }
-    setIsSourceAnalyzing(true);
-    try {
-        const { score, intimacy, formality } = await getSentiment(text);
-        setSourceSentiment({ score, intimacy, formality, emoji: getEmojiForScore(score) });
-    } catch (e) {
-        setSourceSentiment({ score: 0, intimacy: 50, formality: 50, emoji: getEmojiForScore(0) });
-    } finally {
-        setIsSourceAnalyzing(false);
-    }
-  }, []);
 
   const analyzeTranslatedSentiment = useCallback(async (text: string) => {
     if (!text.trim()) {
@@ -55,20 +39,6 @@ const App: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (isLoading) return;
-    const handler = setTimeout(() => {
-        analyzeSourceSentiment(sourceText);
-    }, 500);
-    return () => clearTimeout(handler);
-  }, [sourceText, analyzeSourceSentiment, isLoading]);
-
-  useEffect(() => {
-    if (isLoading) return;
-    analyzeTranslatedSentiment(translatedText);
-  }, [translatedText, analyzeTranslatedSentiment, isLoading]);
-
-
   const handleTranslate = useCallback(async () => {
     if (!sourceText.trim()) return;
 
@@ -78,6 +48,7 @@ const App: React.FC = () => {
     setTranslatedSentiment(null);
     setEmojiSuggestion(null);
     setNuanceExplanation(null);
+    setSourceSentiment(null);
 
     try {
       const { translation, nuance, sourceSentiment: srcSentiment, translatedSentiment: transSentiment } = 
@@ -112,7 +83,24 @@ const App: React.FC = () => {
   }, [sourceText, sourceLanguage, targetLanguage]);
 
   const handleEmojiAdd = (emoji: string) => {
-    setTranslatedText(prev => (prev.trim() + ' ' + emoji).trim());
+    const newText = (translatedText.trim() + ' ' + emoji).trim();
+    setTranslatedText(newText);
+    analyzeTranslatedSentiment(newText);
+  };
+
+  const handleSourceTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value;
+    setSourceText(newText);
+    // If user changes source text, the old translation is invalid.
+    // Clear all derived state.
+    if (translatedText) {
+        setTranslatedText('');
+        setSourceSentiment(null); 
+        setTranslatedSentiment(null);
+        setEmojiSuggestion(null);
+        setNuanceExplanation(null);
+        setError(null);
+    }
   };
 
   return (
@@ -189,10 +177,9 @@ const App: React.FC = () => {
               id="source-text"
               label={`Original Text (${sourceLanguage.name})`}
               value={sourceText}
-              onChange={(e) => setSourceText(e.target.value)}
+              onChange={handleSourceTextChange}
               placeholder="Enter text to translate..."
               sentiment={sourceSentiment}
-              isAnalyzing={isSourceAnalyzing}
             />
 
             {nuanceExplanation && !isLoading && (
