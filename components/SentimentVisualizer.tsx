@@ -49,7 +49,6 @@ const SentimentPoint: React.FC<{ point: Sentiment; isComparison?: boolean }> = (
 
 export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentiment, comparisonSentiment }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const visualizerRef = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(visualizerRef, () => setIsExpanded(false));
@@ -59,16 +58,14 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
       <div className="relative flex items-center justify-center">
         {/* Sentiment Map */}
         <div
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
           className={`absolute bottom-full mb-3 right-1/2 translate-x-1/2 w-48 h-48 origin-bottom transition-all duration-300 ease-in-out p-4 bg-gray-900/70 backdrop-blur-md rounded-lg border border-white/20 shadow-2xl ${
             isExpanded ? 'scale-100 opacity-100' : 'scale-75 opacity-0 -z-10'
           }`}
           style={{ pointerEvents: isExpanded ? 'auto' : 'none' }}
         >
             <div className="relative w-full h-full">
-                {/* Sentiment Legend (on hover) */}
-                <div className={`absolute -top-2 left-0 right-0 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                {/* Sentiment Legend */}
+                <div className="absolute -top-2 left-0 right-0">
                     <div className="w-full h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 rounded-full"></div>
                     <div className="flex justify-between text-[9px] text-white/70 mt-0.5 px-0.5">
                         <span>Negative</span>
@@ -109,9 +106,9 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
                     <SentimentPoint point={sentiment} />
                 </div>
 
-                {/* Axis Labels (on hover) */}
-                <span className={`absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] text-white/50 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>Formal →</span>
-                <span className={`absolute top-1/2 -translate-y-1/2 -left-1.5 text-[10px] text-white/50 origin-center -rotate-90 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>Intimate →</span>
+                {/* Axis Labels */}
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] text-white/50">Formal →</span>
+                <span className="absolute top-1/2 -translate-y-1/2 -left-1.5 text-[10px] text-white/50 origin-center -rotate-90">Intimate →</span>
             </div>
             
         </div>
