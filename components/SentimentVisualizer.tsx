@@ -59,7 +59,7 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
       <div className="relative flex items-center justify-center">
         {/* Sentiment Map */}
         <div
-          className={`absolute bottom-full mb-3 right-1/2 translate-x-1/2 w-48 h-48 origin-bottom transition-all duration-300 ease-in-out p-4 bg-gray-900/70 backdrop-blur-md rounded-lg border border-white/20 shadow-2xl ${
+          className={`absolute bottom-full mb-3 right-0 lg:right-1/2 lg:translate-x-1/2 w-48 h-48 origin-bottom transition-all duration-300 ease-in-out p-4 bg-gray-900/70 backdrop-blur-md rounded-lg border border-white/20 shadow-2xl ${
             isExpanded ? 'scale-100 opacity-100' : 'scale-75 opacity-0 -z-10'
           }`}
           style={{ pointerEvents: isExpanded ? 'auto' : 'none' }}
