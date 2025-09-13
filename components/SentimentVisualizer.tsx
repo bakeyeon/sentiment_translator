@@ -3,6 +3,7 @@ import type { Sentiment } from '../types';
 
 interface SentimentVisualizerProps {
   sentiment: Sentiment;
+  comparisonSentiment?: Sentiment | null;
 }
 
 const useOnClickOutside = <T extends HTMLElement,>(
@@ -25,51 +26,103 @@ const useOnClickOutside = <T extends HTMLElement,>(
   }, [ref, handler]);
 };
 
-export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentiment }) => {
+const SentimentPoint: React.FC<{ point: Sentiment; isComparison?: boolean }> = ({ point, isComparison }) => {
+    // Map score from -1 (red) to 1 (green) through yellow
+    const pointColor = `hsl(${120 * (point.score * 0.5 + 0.5)}, 80%, 60%)`;
+    
+    return (
+        <div
+            className={`absolute w-3 h-3 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out`}
+            style={{ 
+                bottom: `${point.intimacy}%`, 
+                left: `${point.formality}%`,
+                backgroundColor: isComparison ? 'transparent' : pointColor,
+                border: isComparison ? `2px solid ${pointColor}` : 'none',
+            }}
+            title={`Sentiment: ${point.score.toFixed(2)}\nIntimacy: ${point.intimacy}\nFormality: ${point.formality}`}
+        >
+             <div className="absolute inset-0 rounded-full" style={{boxShadow: `0 0 8px 1px ${pointColor}`}}></div>
+        </div>
+    );
+}
+
+
+export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentiment, comparisonSentiment }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const visualizerRef = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(visualizerRef, () => setIsExpanded(false));
 
-  const rotation = sentiment.score * 90; // Map score from -1 to 1 => -90deg to 90deg
-
   return (
     <div ref={visualizerRef} className="absolute bottom-0 right-0">
       <div className="relative flex items-center justify-center">
-        {/* Fan Background (Semicircle) */}
+        {/* Sentiment Map */}
         <div
-          className={`absolute bottom-0 w-48 h-24 origin-bottom transition-all duration-300 ease-in-out pointer-events-none ${
-            isExpanded ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className={`absolute bottom-full mb-3 right-1/2 translate-x-1/2 w-48 h-48 origin-bottom transition-all duration-300 ease-in-out p-4 bg-gray-900/70 backdrop-blur-md rounded-lg border border-white/20 shadow-2xl ${
+            isExpanded ? 'scale-100 opacity-100' : 'scale-75 opacity-0 -z-10'
           }`}
-          style={{
-            transform: 'translateY(-20px)',
-            borderTopLeftRadius: '96px',
-            borderTopRightRadius: '96px',
-            background: 'conic-gradient(from 180deg at 50% 100%, #ef4444, #f59e0b, #facc15, #a3e635, #4ade80)',
-          }}
-        ></div>
-
-        {/* Emoji Indicator on the fan */}
-        <div
-          className={`absolute bottom-0 origin-bottom w-px h-24 transition-transform duration-500 ease-out pointer-events-none ${
-            isExpanded ? 'opacity-100 delay-200' : 'opacity-0'
-          }`}
-          style={{
-            transform: `translateY(-20px) rotate(${rotation}deg)`,
-          }}
+          style={{ pointerEvents: isExpanded ? 'auto' : 'none' }}
         >
-          <div className="absolute top-[2px] left-1/2 -translate-x-1/2 bg-gray-800/50 backdrop-blur-sm rounded-full p-0.5 shadow-lg border border-white/20">
-            <span className="text-base">{sentiment.emoji}</span>
-          </div>
-        </div>
+            <div className="relative w-full h-full">
+                {/* Sentiment Legend (on hover) */}
+                <div className={`absolute -top-2 left-0 right-0 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                    <div className="w-full h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 rounded-full"></div>
+                    <div className="flex justify-between text-[9px] text-white/70 mt-0.5 px-0.5">
+                        <span>Negative</span>
+                        <span>Positive</span>
+                    </div>
+                </div>
 
+                {/* Grid */}
+                <div className="absolute inset-0 grid grid-cols-4 grid-rows-4">
+                    {[...Array(16)].map((_, i) => (
+                        <div key={i} className="border-r border-b border-white/10 last:border-r-0"></div>
+                    ))}
+                </div>
+
+                {/* Plot Area */}
+                <div className="absolute inset-0">
+                    {comparisonSentiment && (
+                         <svg className="absolute inset-0 w-full h-full overflow-visible" style={{transform: 'scaleY(-1) rotate(180deg)'}}>
+                            <line
+                                x1={`${100-comparisonSentiment.formality}%`}
+                                y1={`${100-comparisonSentiment.intimacy}%`}
+                                x2={`${100-sentiment.formality}%`}
+                                y2={`${100-sentiment.intimacy}%`}
+                                stroke="url(#line-gradient)"
+                                strokeWidth="2"
+                                strokeDasharray="3 3"
+                            />
+                             <defs>
+                                <linearGradient id="line-gradient" x1={`${100-comparisonSentiment.formality}%`} y1={`${100-comparisonSentiment.intimacy}%`} x2={`${100-sentiment.formality}%`} y2={`${100-sentiment.intimacy}%`} gradientUnits="userSpaceOnUse">
+                                    <stop stopColor={`hsl(${120 * (comparisonSentiment.score * 0.5 + 0.5)}, 80%, 60%)`} stopOpacity="0.8" />
+                                    <stop offset="1" stopColor={`hsl(${120 * (sentiment.score * 0.5 + 0.5)}, 80%, 60%)`} stopOpacity="0.8" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    )}
+                   
+                    {comparisonSentiment && <SentimentPoint point={comparisonSentiment} isComparison />}
+                    <SentimentPoint point={sentiment} />
+                </div>
+
+                {/* Axis Labels (on hover) */}
+                <span className={`absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] text-white/50 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>Formal →</span>
+                <span className={`absolute top-1/2 -translate-y-1/2 -left-1.5 text-[10px] text-white/50 origin-center -rotate-90 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>Intimate →</span>
+            </div>
+            
+        </div>
+        
         {/* Emoji Button */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className={`text-2xl transition-transform duration-300 ease-in-out hover:scale-125 focus:outline-none z-10 ${
             isExpanded ? 'scale-150' : 'scale-100'
           }`}
-          aria-label="Show sentiment analysis"
+          aria-label="Show sentiment analysis map"
         >
           {sentiment.emoji}
         </button>

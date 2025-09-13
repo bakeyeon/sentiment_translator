@@ -1,5 +1,7 @@
 export interface SentimentScore {
   score: number; // A value from -1.0 (negative) to 1.0 (positive)
+  intimacy: number; // A value from 0 (distant) to 100 (intimate)
+  formality: number; // A value from 0 (informal) to 100 (formal)
 }
 
 export interface Sentiment extends SentimentScore {

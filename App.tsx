@@ -30,10 +30,10 @@ const App: React.FC = () => {
     }
     setIsSourceAnalyzing(true);
     try {
-        const { score } = await getSentiment(text);
-        setSourceSentiment({ score, emoji: getEmojiForScore(score) });
+        const { score, intimacy, formality } = await getSentiment(text);
+        setSourceSentiment({ score, intimacy, formality, emoji: getEmojiForScore(score) });
     } catch (e) {
-        setSourceSentiment({ score: 0, emoji: getEmojiForScore(0) });
+        setSourceSentiment({ score: 0, intimacy: 50, formality: 50, emoji: getEmojiForScore(0) });
     } finally {
         setIsSourceAnalyzing(false);
     }
@@ -46,10 +46,10 @@ const App: React.FC = () => {
     }
     setIsTranslatedAnalyzing(true);
      try {
-        const { score } = await getSentiment(text);
-        setTranslatedSentiment({ score, emoji: getEmojiForScore(score) });
+        const { score, intimacy, formality } = await getSentiment(text);
+        setTranslatedSentiment({ score, intimacy, formality, emoji: getEmojiForScore(score) });
     } catch (e) {
-        setTranslatedSentiment({ score: 0, emoji: getEmojiForScore(0) });
+        setTranslatedSentiment({ score: 0, intimacy: 50, formality: 50, emoji: getEmojiForScore(0) });
     } finally {
         setIsTranslatedAnalyzing(false);
     }
@@ -84,12 +84,12 @@ const App: React.FC = () => {
         await getTranslationAndSentiment(sourceText, sourceLanguage.code, targetLanguage.name);
       
       setSourceSentiment({ 
-        score: srcSentiment.score, 
+        ...srcSentiment, 
         emoji: getEmojiForScore(srcSentiment.score) 
       });
       setTranslatedText(translation);
       setTranslatedSentiment({
-        score: transSentiment.score,
+        ...transSentiment,
         emoji: getEmojiForScore(transSentiment.score)
       });
       
@@ -219,6 +219,7 @@ const App: React.FC = () => {
               readOnly
               placeholder="Translation will appear here..."
               sentiment={translatedSentiment}
+              comparisonSentiment={sourceSentiment}
               isLoading={isLoading && !translatedText}
               isAnalyzing={isTranslatedAnalyzing}
             />

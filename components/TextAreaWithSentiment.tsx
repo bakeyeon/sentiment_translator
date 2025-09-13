@@ -11,6 +11,7 @@ interface TextAreaWithSentimentProps {
   readOnly?: boolean;
   placeholder: string;
   sentiment: Sentiment | null;
+  comparisonSentiment?: Sentiment | null;
   isLoading?: boolean; // For the big overlay spinner (used for initial translation)
   isAnalyzing?: boolean; // For the small real-time analysis spinner
 }
@@ -23,6 +24,7 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
   readOnly = false,
   placeholder,
   sentiment,
+  comparisonSentiment,
   isLoading,
   isAnalyzing,
 }) => {
@@ -49,7 +51,7 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
             {isAnalyzing ? (
                  <LoadingSpinner className="w-6 h-6 animate-spin text-cyan-400"/>
             ) : sentiment && (
-                 <SentimentVisualizer sentiment={sentiment} />
+                 <SentimentVisualizer sentiment={sentiment} comparisonSentiment={comparisonSentiment} />
             )}
         </div>
       </div>
