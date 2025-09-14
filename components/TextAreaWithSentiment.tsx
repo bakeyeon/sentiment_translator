@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Sentiment, UITranslations } from '../types';
+import type { Sentiment, UITranslations, TextStyle } from '../types';
 import { SentimentVisualizer } from './SentimentVisualizer';
 import { LoadingSpinner } from './icons';
 
@@ -15,6 +15,7 @@ interface TextAreaWithSentimentProps {
   uiTranslations?: UITranslations | null;
   isLoading?: boolean; // For the big overlay spinner (used for initial translation)
   isAnalyzing?: boolean; // For the small real-time analysis spinner
+  textStyle?: TextStyle | null;
 }
 
 export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
@@ -29,9 +30,10 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
   uiTranslations,
   isLoading,
   isAnalyzing,
+  textStyle,
 }) => {
   return (
-    <div className="relative w-full">
+    <div className="w-full">
       <label htmlFor={id} className="block mb-2 text-sm font-medium text-cyan-200">
         {label}
       </label>
@@ -61,6 +63,13 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
             )}
         </div>
       </div>
+      {textStyle && uiTranslations && (uiTranslations.spoken || uiTranslations.written) && (
+        <div className="mt-2 text-right">
+          <span className="inline-block bg-gray-700 text-cyan-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+            {textStyle === 'SPOKEN' ? uiTranslations.spoken : uiTranslations.written}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

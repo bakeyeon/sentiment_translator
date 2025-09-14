@@ -23,7 +23,11 @@ export interface UITranslations {
   intimate: string;
   negative: string;
   positive: string;
+  spoken: string;
+  written: string;
 }
+
+export type TextStyle = 'SPOKEN' | 'WRITTEN';
 
 export interface TranslationResponse {
   translation: string;
@@ -31,4 +35,6 @@ export interface TranslationResponse {
   translatedSentiment: SentimentScore;
   uiTranslations: UITranslations;
   nuance?: string;
+  sourceStyle: TextStyle;
+  translatedStyle: TextStyle;
 }
