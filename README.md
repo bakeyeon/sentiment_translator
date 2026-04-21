@@ -21,11 +21,9 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 
 
 ## Acknowledgments
-I would like to express my sincere gratitude to Prof. Jacopo Romoli and Dr. Yulia Zinova for their invaluable guidance, insightful feedback, and academic supervision. Their expertise and encouragement were instrumental in the development of this research and in shaping its linguistic and technical depth.
+I would like to thank Prof. Jacopo Romoli and Dr. Yulia Zinova for providing the insightful lectures and the academic environment that inspired this research. Their courses were instrumental in shaping the foundational ideas.
+This project is built and vibe-coded with Google AI Studio. Special thanks to the Google Developers Program for providing API credits and the generous sponsorship of the Gemini Pro membership, which made the initial implementation of this demo possible.
 
-
-
-Vibe-coded with Google AI Studio.
 
 ## Run Locally
 **Prerequisites:**  Node.js
