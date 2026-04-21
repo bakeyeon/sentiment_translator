@@ -19,6 +19,12 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - 🙂 At-a-glance Emojis: It assigns an emoji to each text, giving you an instant feel for the underlying sentiment.
 - 🗺️ Clickable Emotion Map: Click the emoji to see it expand, showing its position on a visual gradient map to gauge the emotional tone.
 
+
+## Acknowledgments
+I would like to express my sincere gratitude to Prof. Jacopo Romoli and Dr. Yulia Zinova for their invaluable guidance, insightful feedback, and academic supervision. Their expertise and encouragement were instrumental in the development of this research and in shaping its linguistic and technical depth.
+
+
+
 Vibe-coded with Google AI Studio.
 
 ## Run Locally
@@ -34,3 +40,5 @@ Vibe-coded with Google AI Studio.
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
+
+
