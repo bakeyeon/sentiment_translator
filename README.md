@@ -22,7 +22,7 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 
 ## Acknowledgments
 I would like to thank Prof. Jacopo Romoli and Dr. Yulia Zinova for providing the insightful lectures and the academic environment that inspired this research. Their courses were instrumental in shaping the foundational ideas.
-This project is built and vibe-coded with Google AI Studio. Special thanks to the Google Developers Program for providing API credits and the generous sponsorship of the Gemini Pro membership, which made the initial implementation of this demo possible.
+This project is vibe-coded with Google AI Studio. Special thanks to the Google Developers Program for providing the API credits and the Gemini Pro access that supported the initial implementation of this demo.
 
 
 ## Run Locally
