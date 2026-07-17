@@ -5,6 +5,7 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - Paper 1: Modalpartikeln': Can Sentiments Survive Translation with Emojis? (https://github.com/bakeyeon/Modalparticles_Emojis)
 - Paper 2: How Much Sentiment Can Be Carried by Modal Particles? (https://github.com/bakeyeon/modalparticles_sentiment_analysis)
 - Video Overview of 2 Papers: https://youtu.be/dYcz4MZNst4
+- Medium Post: Can We Translate Our Sentiments? (https://medium.com/gopenai/can-we-translate-our-sentiments-140c55822ead?sharedUserId=kaiwritesornot)
 
 ## Limitations
 - Subjectivity of Survey Data: As the study relies on surveys of proficient language users, the data is inherently subject to individual interpretation and personal perception of emotional nuances.
