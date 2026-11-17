@@ -86,16 +86,22 @@ const App: React.FC = () => {
           setNuanceExplanation(nuance);
       }
 
+      setIsLoading(false);
+
       const scoreDifference = Math.abs(srcSentiment.score - transSentiment.score);
       if (scoreDifference > 0.2) { // Threshold to avoid suggestions for tiny differences
-        const suggestions = await getEmojiSuggestions(sourceText, translation, srcSentiment.score, transSentiment.score);
-        setEmojiSuggestion(suggestions);
+        getEmojiSuggestions(sourceText, translation, srcSentiment.score, transSentiment.score)
+          .then((suggestions) => setEmojiSuggestion(suggestions))
+          .catch((suggestionErr) => console.error('Emoji suggestion error:', suggestionErr));
       }
 
     } catch (err) {
-      setError('An error occurred. Please check your API key and try again.');
+      const message =
+        err instanceof Error && err.message
+          ? err.message
+          : 'An error occurred while translating. Please try again.';
+      setError(message);
       console.error(err);
-    } finally {
       setIsLoading(false);
     }
   }, [sourceText, sourceLanguage, targetLanguage]);
