@@ -15,6 +15,8 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - **Automatic fallback:** if Gemini 4 Hydrogen is busy (503), over quota (429), erroring (500) or slower than 12 seconds, the request is retried once on Gemini 3.5 Flash-Lite. Change these with `GEMINI_FALLBACK_MODEL` and `GEMINI_TIMEOUT_MS`. The `X-Gemini-Model` response header says which model answered.
 - How the anchors were calibrated and cross-checked is in [docs/scoring-rubric.md](docs/scoring-rubric.md).
 
+📐 **About SFF:** the full scoring rubric, axis definitions and calibration are in [docs/scoring-rubric.md](docs/scoring-rubric.md). For the SFF (Sentiment-Formality-Friendliness) concept itself, see my paper [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
+
 ## Demo
 [![Sentiment Translator demo: switching the target language to Korean and opening the sentiment map](demo/preview.gif)](https://youtu.be/GvVGA-x60XE)
 

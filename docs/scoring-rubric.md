@@ -12,6 +12,14 @@ The three axes follow SFF (Sentiment-Formality-Friendliness):
 
 Up to v1, the vertical axis was *intimacy*. v2.0.0 replaces it with *friendliness*, so the app matches SFF.
 
+### Why friendliness, not intimacy
+
+> **Friendliness:** the warmth an utterance expresses toward the listener, read within the relationship the utterance itself signals.
+
+- **Intimacy describes a relationship; friendliness describes an utterance.** Intimacy is about who the speakers are to each other: family, friends or strangers. A single sentence often does not reveal that, so a model has to guess beyond the text. Friendliness is the warmth the sentence itself conveys, which can be read from the text. In politeness terms, intimacy is close to social distance (Brown & Levinson's *D*), a property of the relationship. Friendliness is the stance the speaker takes in this utterance.
+- **It overlaps less with formality.** Casual grammar such as Korean banmal or German *du* is easily read as a sign of intimacy, so an intimacy axis tends to mirror the formality axis. Friendliness can move independently of formality. *Würden Sie bitte vorbeikommen?* is formal (70) and still fairly warm (55). *ㅇㅋ* is maximally casual (0) but only neutral in warmth.
+- **What "the relationship the utterance itself signals" means:** the score does not imagine a relationship from outside the text. It does use relationship cues in the text. *Nice to meet you.* says on its face that the speakers have just met, so it scores 35: warm wording, but not close.
+
 ## The rubric
 
 The rubric text is the `RUBRIC` constant in [`server.ts`](../server.ts); both `/api/gemini/sentiment` and `/api/gemini/translate` use it.
