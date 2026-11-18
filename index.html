@@ -10,6 +10,15 @@
     <meta property="og:title" content="Sentiment Translator" />
     <meta property="og:description" content="A prototype translation app that visualizes and compares the sentiment of the original and translated text to ensure nuanced meaning is preserved." />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: 'class' };
+      (function () {
+        var dark;
+        try { var saved = localStorage.getItem('theme'); dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+        catch (e) { dark = matchMedia('(prefers-color-scheme: dark)').matches; }
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
   <script type="importmap">
 {
   "imports": {
@@ -19,9 +28,29 @@
   }
 }
 </script>
+    <style>
+      /* soft, fixed colour washes behind the glass panels */
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(1100px 620px at 8% -8%, rgba(103, 232, 249, 0.35), transparent 62%),
+          radial-gradient(900px 560px at 108% 6%, rgba(196, 181, 253, 0.32), transparent 60%),
+          radial-gradient(1000px 640px at 50% 112%, rgba(153, 246, 228, 0.32), transparent 62%),
+          #f6f8fb;
+        background-attachment: fixed;
+      }
+      html.dark body {
+        background:
+          radial-gradient(1100px 620px at 8% -8%, rgba(34, 211, 238, 0.13), transparent 62%),
+          radial-gradient(900px 560px at 108% 6%, rgba(139, 92, 246, 0.14), transparent 60%),
+          radial-gradient(1000px 640px at 50% 112%, rgba(45, 212, 191, 0.10), transparent 62%),
+          #0b1120;
+        background-attachment: fixed;
+      }
+    </style>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-gray-900">
+  <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

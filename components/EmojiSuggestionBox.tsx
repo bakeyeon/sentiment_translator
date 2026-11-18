@@ -9,19 +9,19 @@ interface EmojiSuggestionBoxProps {
 
 export const EmojiSuggestionBox: React.FC<EmojiSuggestionBoxProps> = ({ suggestion, onEmojiClick }) => {
   return (
-    <div className="p-4 bg-teal-900/40 border border-teal-500/30 rounded-lg animate-fade-in">
+    <div className="p-4 bg-teal-50/60 dark:bg-teal-900/25 backdrop-blur-xl border border-teal-200/70 dark:border-teal-500/25 rounded-2xl shadow-[0_8px_32px_rgba(15,23,42,0.05)] animate-fade-in">
       <div className="flex items-center gap-2 mb-2">
-        <SparklesIcon className="w-5 h-5 text-teal-300" />
-        <h3 className="font-semibold text-teal-200">Nuance Suggestion</h3>
+        <SparklesIcon className="w-5 h-5 text-teal-600 dark:text-teal-300" />
+        <h3 className="font-semibold text-teal-700 dark:text-teal-200">Nuance Suggestion</h3>
       </div>
-      <p className="text-sm text-gray-300 mb-3">{suggestion.explanation}</p>
+      <p className="text-sm text-slate-500 dark:text-gray-300 mb-3">{suggestion.explanation}</p>
       <div className="flex items-center gap-2">
-        <p className="text-sm text-gray-400">Try adding:</p>
+        <p className="text-sm text-slate-500 dark:text-gray-400">Try adding:</p>
         {suggestion.emojis.map((emoji) => (
           <button
             key={emoji}
             onClick={() => onEmojiClick(emoji)}
-            className="text-2xl rounded-full p-1 transition-transform duration-200 ease-in-out hover:scale-125 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-teal-400"
+            className="text-2xl rounded-full p-1 transition-transform duration-200 ease-in-out hover:scale-125 hover:bg-slate-100 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-teal-400"
             aria-label={`Add ${emoji} emoji`}
           >
             {emoji}

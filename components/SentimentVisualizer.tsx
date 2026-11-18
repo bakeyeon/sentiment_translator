@@ -68,17 +68,17 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
       <div className="relative flex items-center justify-center">
         {/* Sentiment Map */}
         <div
-          className={`absolute bottom-full mb-3 right-0 lg:right-1/2 lg:translate-x-1/2 w-56 origin-bottom transition-all duration-300 ease-in-out p-3.5 bg-gray-900/90 backdrop-blur-md rounded-lg border border-white/20 shadow-2xl ${
+          className={`absolute bottom-full mb-3 right-0 lg:right-1/2 lg:translate-x-1/2 w-56 origin-bottom transition-all duration-300 ease-in-out p-3.5 bg-white/75 dark:bg-gray-900/75 backdrop-blur-xl rounded-2xl border border-white/80 dark:border-white/15 shadow-2xl ${
             isExpanded ? 'scale-100 opacity-100' : 'scale-75 opacity-0 -z-10'
           }`}
           style={{ pointerEvents: isExpanded ? 'auto' : 'none' }}
         >
             {/* Color = Sentiment Legend (separate from X/Y grid axes) */}
-            <div className="mb-3 pb-2 border-b border-white/10">
+            <div className="mb-3 pb-2 border-b border-slate-200 dark:border-white/10">
                 <div className="w-full h-1.5 bg-gradient-to-r from-red-500 via-yellow-400 to-green-500 rounded-full"></div>
-                <div className="flex justify-between text-[9px] text-white/70 mt-1">
+                <div className="flex justify-between text-[9px] text-slate-600 dark:text-white/70 mt-1">
                     <span>{uiTranslations?.negative ?? 'Negative'}</span>
-                    <span className="text-white/50">●</span>
+                    <span className="text-slate-400 dark:text-white/50">●</span>
                     <span>{uiTranslations?.positive ?? 'Positive'}</span>
                 </div>
             </div>
@@ -87,9 +87,9 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
             <div className="relative w-full h-36 pl-4 pb-4">
                 <div className="relative w-full h-full">
                     {/* Grid */}
-                    <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 border border-white/10">
+                    <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 border border-slate-200 dark:border-white/10">
                         {[...Array(16)].map((_, i) => (
-                            <div key={i} className="border-r border-b border-white/10 last:border-r-0"></div>
+                            <div key={i} className="border-r border-b border-slate-200 dark:border-white/10 last:border-r-0"></div>
                         ))}
                     </div>
 
@@ -121,12 +121,12 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
                 </div>
 
                 {/* Axis Labels */}
-                <span className="absolute bottom-0 right-0 text-[10px] text-white/60">{uiTranslations?.formal ?? 'Formal'} →</span>
-                <span className="absolute top-1/2 -translate-y-1/2 -left-4 text-[10px] text-white/60 origin-center -rotate-90 whitespace-nowrap">{uiTranslations?.friendly ?? 'Friendly'} →</span>
+                <span className="absolute bottom-0 right-0 text-[10px] text-slate-500 dark:text-white/60">{uiTranslations?.formal ?? 'Formal'} →</span>
+                <span className="absolute top-1/2 -translate-y-1/2 -left-4 text-[10px] text-slate-500 dark:text-white/60 origin-center -rotate-90 whitespace-nowrap">{uiTranslations?.friendly ?? 'Friendly'} →</span>
             </div>
 
             {/* Numeric Readout */}
-            <div className="mt-2 pt-1.5 border-t border-white/10 flex justify-between text-[10px] text-white/70 tabular-nums">
+            <div className="mt-2 pt-1.5 border-t border-slate-200 dark:border-white/10 flex justify-between text-[10px] text-slate-600 dark:text-white/70 tabular-nums">
                 <span>{score >= 0 ? `+${score.toFixed(2)}` : score.toFixed(2)}</span>
                 <span>{uiTranslations?.friendly ?? 'Friendly'}: {Math.round(friendliness)}</span>
                 <span>{uiTranslations?.formal ?? 'Formal'}: {Math.round(formality)}</span>

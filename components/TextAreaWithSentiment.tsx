@@ -34,7 +34,7 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
 }) => {
   return (
     <div className="w-full">
-      <label htmlFor={id} className="block mb-2 text-sm font-medium text-cyan-200">
+      <label htmlFor={id} className="block mb-2 text-sm font-medium text-cyan-700 dark:text-cyan-200">
         {label}
       </label>
       <div className="relative">
@@ -44,10 +44,10 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
           onChange={onChange}
           readOnly={readOnly}
           placeholder={placeholder}
-          className="w-full h-48 p-4 pr-20 text-lg text-gray-100 bg-white/5 border border-cyan-500/30 rounded-lg resize-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 focus:outline-none backdrop-blur-sm transition-colors"
+          className="w-full h-48 p-4 pr-20 text-lg text-slate-800 dark:text-gray-100 bg-white/55 dark:bg-white/[0.04] backdrop-blur-xl border border-white/80 dark:border-white/10 shadow-[0_8px_32px_rgba(15,23,42,0.07)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.35)] rounded-2xl resize-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 focus:outline-none backdrop-blur-sm transition-colors"
         />
         {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 rounded-lg">
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-2xl">
                 <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-cyan-400"></div>
             </div>
         )}
@@ -65,7 +65,7 @@ export const TextAreaWithSentiment: React.FC<TextAreaWithSentimentProps> = ({
       </div>
       {textStyle && uiTranslations && (uiTranslations.spoken || uiTranslations.written) && (
         <div className="mt-2 text-right">
-          <span className="inline-block bg-gray-700 text-cyan-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+          <span className="inline-block bg-cyan-50 dark:bg-gray-700 text-cyan-700 dark:text-cyan-200 text-xs font-semibold px-2.5 py-1 rounded-full">
             {textStyle === 'SPOKEN' ? uiTranslations.spoken : uiTranslations.written}
           </span>
         </div>
