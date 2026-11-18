@@ -17,6 +17,52 @@ If you have a research prototype, you can introduce it the same way: a clear, na
 
 ## The pipeline
 
+```mermaid
+flowchart TD
+    script["📝 script.json<br/>narration + captions"]
+    app["📱 Running app<br/>npm run dev"]
+    api["☁️ Gemini API<br/>answers fetched first, cached"]
+
+    tts["1 · tts.py<br/>edge-tts"]
+    rec["2 · record.mjs<br/>Playwright at phone size"]
+    f2v["3 · frames_to_video.py<br/>exact 30 fps"]
+    assets["4 · assets.mjs<br/>HTML/CSS → PNG"]
+    compose["5 · compose.py<br/>ffmpeg + numpy"]
+
+    voice[("🎙️ voice lines<br/>+ durations")]
+    frames[("🖼️ 2× screencast frames")]
+    events[("🕒 events.json<br/>taps · maps · results · voice")]
+    phone[("📼 phone video")]
+    pngs[("🃏 cards · captions<br/>phone frame · background")]
+    final(["🎬 1080p demo video<br/>with narration, effects, music"])
+
+    script --> tts --> voice
+    voice -- "how long to wait" --> rec
+    app --> rec
+    api --> rec
+    rec --> frames --> f2v --> phone
+    rec --> events
+    events --> assets
+    script --> assets
+    assets --> pngs
+    phone --> compose
+    pngs --> compose
+    events -- "when to show what" --> compose
+    voice --> compose
+    compose --> final
+
+    classDef step fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+    classDef data fill:#f8fafc,stroke:#94a3b8,color:#334155
+    classDef input fill:#ede9fe,stroke:#7c3aed,color:#3b0764
+    classDef out fill:#dcfce7,stroke:#16a34a,color:#14532d
+    class tts,rec,f2v,assets,compose step
+    class voice,frames,events,phone,pngs data
+    class script,app,api input
+    class final out
+```
+
+Purple boxes are inputs, blue boxes are the five scripts, grey shapes are what each step produces, and green is the finished video. `events.json` is the hub: everything after the recording is timed from it.
+
 ```bash
 python demo/mobile/tts.py              # 1. narration from script.json -> voice/*.wav + durations
 node   demo/mobile/record.mjs          # 2. drive the app at phone size, capture frames, log every event
