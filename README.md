@@ -12,7 +12,7 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 
 ▶️ Click the GIF or [watch the full demo on YouTube (2:20)](https://youtu.be/on5TFSEBs4Q) to see it bigger: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean.
 
-> **Note:** This is a concept video. The SFF map is an illustrative visualisation of the model's estimates, not a precise implementation of SFF (Sentiment-Formality-Friendliness).
+> **Note:** This is a concept video. The SFF map is an illustrative visualisation of the model's estimates, not a precise implementation of SFF (Sentiment-Formality-Friendliness). To read more about SFF, see my latest paper, [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
 
 ## Limitations
 - Subjectivity of Survey Data: As the study relies on surveys of proficient language users, the data is inherently subject to individual interpretation and personal perception of emotional nuances.
