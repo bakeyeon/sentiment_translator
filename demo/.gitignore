@@ -7,3 +7,7 @@ mix.wav
 events.json
 map_runs.json
 *.mp4
+cal_run*.txt
+cal_missing*.txt
+rub_run*.txt
+calibration.json

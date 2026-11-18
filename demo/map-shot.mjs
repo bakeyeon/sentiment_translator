@@ -1,10 +1,10 @@
 // Captures a sharp close-up of the translation's sentiment map into demo/sentiment-map.png.
-// Needs the app running (npm run dev on :3000). Usage: node demo/map-shot.mjs
+// Needs the app running (npm run dev on :3000, or set APP_URL). Usage: node demo/map-shot.mjs
 import { chromium } from 'playwright';
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 3 });
-await page.goto('http://127.0.0.1:3000/');
+await page.goto(process.env.APP_URL || 'http://127.0.0.1:3000/');
 await page.selectOption('#source-language', 'de');
 await page.selectOption('#target-language', 'en');
 await page.fill('#source-text', 'Komm doch mal vorbei!');

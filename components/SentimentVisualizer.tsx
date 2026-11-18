@@ -31,7 +31,7 @@ const clamp = (value: number, min: number, max: number) => Math.max(min, Math.mi
 
 const SentimentPoint: React.FC<{ point: Sentiment; isComparison?: boolean }> = ({ point, isComparison }) => {
     const score = clamp(point.score, -1, 1);
-    const intimacy = clamp(point.intimacy, 0, 100);
+    const friendliness = clamp(point.friendliness, 0, 100);
     const formality = clamp(point.formality, 0, 100);
     // Map score from -1 (red) to 1 (green) through yellow
     const pointColor = `hsl(${120 * (score * 0.5 + 0.5)}, 80%, 60%)`;
@@ -40,12 +40,12 @@ const SentimentPoint: React.FC<{ point: Sentiment; isComparison?: boolean }> = (
         <div
             className={`absolute w-3 h-3 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out`}
             style={{ 
-                top: `${100 - intimacy}%`, 
+                top: `${100 - friendliness}%`, 
                 left: `${formality}%`,
                 backgroundColor: isComparison ? 'transparent' : pointColor,
                 border: isComparison ? `2px solid ${pointColor}` : 'none',
             }}
-            title={`Sentiment: ${score.toFixed(2)}\nIntimacy: ${intimacy}\nFormality: ${formality}`}
+            title={`Sentiment: ${score.toFixed(2)}\nFriendliness: ${friendliness}\nFormality: ${formality}`}
         >
              <div className="absolute inset-0 rounded-full" style={{boxShadow: `0 0 8px 1px ${pointColor}`}}></div>
         </div>
@@ -60,7 +60,7 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
   useOnClickOutside(visualizerRef, () => setIsExpanded(false));
 
   const score = clamp(sentiment.score, -1, 1);
-  const intimacy = clamp(sentiment.intimacy, 0, 100);
+  const friendliness = clamp(sentiment.friendliness, 0, 100);
   const formality = clamp(sentiment.formality, 0, 100);
 
   return (
@@ -83,7 +83,7 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
                 </div>
             </div>
 
-            {/* 2D Plot Area (X: Formality, Y: Intimacy) */}
+            {/* 2D Plot Area (X: Formality, Y: Friendliness) */}
             <div className="relative w-full h-36 pl-4 pb-4">
                 <div className="relative w-full h-full">
                     {/* Grid */}
@@ -99,15 +99,15 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
                              <svg className="absolute inset-0 w-full h-full overflow-visible" style={{transform: 'scaleY(-1) rotate(180deg)'}}>
                                 <line
                                     x1={`${100 - clamp(comparisonSentiment.formality, 0, 100)}%`}
-                                    y1={`${100 - clamp(comparisonSentiment.intimacy, 0, 100)}%`}
+                                    y1={`${100 - clamp(comparisonSentiment.friendliness, 0, 100)}%`}
                                     x2={`${100 - formality}%`}
-                                    y2={`${100 - intimacy}%`}
+                                    y2={`${100 - friendliness}%`}
                                     stroke="url(#line-gradient)"
                                     strokeWidth="2"
                                     strokeDasharray="3 3"
                                 />
                                  <defs>
-                                    <linearGradient id="line-gradient" x1={`${100 - clamp(comparisonSentiment.formality, 0, 100)}%`} y1={`${100 - clamp(comparisonSentiment.intimacy, 0, 100)}%`} x2={`${100 - formality}%`} y2={`${100 - intimacy}%`} gradientUnits="userSpaceOnUse">
+                                    <linearGradient id="line-gradient" x1={`${100 - clamp(comparisonSentiment.formality, 0, 100)}%`} y1={`${100 - clamp(comparisonSentiment.friendliness, 0, 100)}%`} x2={`${100 - formality}%`} y2={`${100 - friendliness}%`} gradientUnits="userSpaceOnUse">
                                         <stop stopColor={`hsl(${120 * (clamp(comparisonSentiment.score, -1, 1) * 0.5 + 0.5)}, 80%, 60%)`} stopOpacity="0.8" />
                                         <stop offset="1" stopColor={`hsl(${120 * (score * 0.5 + 0.5)}, 80%, 60%)`} stopOpacity="0.8" />
                                     </linearGradient>
@@ -122,13 +122,13 @@ export const SentimentVisualizer: React.FC<SentimentVisualizerProps> = ({ sentim
 
                 {/* Axis Labels */}
                 <span className="absolute bottom-0 right-0 text-[10px] text-white/60">{uiTranslations?.formal ?? 'Formal'} →</span>
-                <span className="absolute top-1/2 -translate-y-1/2 -left-4 text-[10px] text-white/60 origin-center -rotate-90 whitespace-nowrap">{uiTranslations?.intimate ?? 'Intimate'} →</span>
+                <span className="absolute top-1/2 -translate-y-1/2 -left-4 text-[10px] text-white/60 origin-center -rotate-90 whitespace-nowrap">{uiTranslations?.friendly ?? 'Friendly'} →</span>
             </div>
 
             {/* Numeric Readout */}
             <div className="mt-2 pt-1.5 border-t border-white/10 flex justify-between text-[10px] text-white/70 tabular-nums">
                 <span>{score >= 0 ? `+${score.toFixed(2)}` : score.toFixed(2)}</span>
-                <span>{uiTranslations?.intimate ?? 'Intimate'}: {Math.round(intimacy)}</span>
+                <span>{uiTranslations?.friendly ?? 'Friendly'}: {Math.round(friendliness)}</span>
                 <span>{uiTranslations?.formal ?? 'Formal'}: {Math.round(formality)}</span>
             </div>
         </div>

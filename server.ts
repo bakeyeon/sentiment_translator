@@ -8,7 +8,33 @@ import type { EmojiSuggestion, SentimentScore, TranslationResponse } from './typ
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
-const MODEL_NAME = 'gemini-4-hydrogen';
+const MODEL_NAME = process.env.GEMINI_MODEL || 'gemini-4-hydrogen';
+// A fixed seed makes repeated runs as consistent as the API allows (best effort, not a guarantee).
+const SEED = 2026;
+
+// One shared rubric for every scoring prompt. Anchor values were calibrated against model output
+// and adjusted by hand (e.g. German Sie is the everyday polite default, not high formality).
+const RUBRIC = `Scoring rubric (use these anchors and place other sentences relative to them):
+- sentiment (-1.0 to 1.0): how negative or positive the feeling is.
+  -0.9 "I hate this." | -0.7 "That's disappointing." | 0.0 "The meeting is at 3." | 0.5 "Sounds good." | 0.8 "Thanks so much!" | 0.95 "I love you, mom."
+  Everyday questions, greetings and softened check-ins are neutral to slightly positive (0.0 to 0.2) unless there are explicit negative or hostile cues.
+- formality (0 to 100): how formal or polite the register is.
+  0 "ㅇㅋ" | 10 "Komm vorbei!" | 45 "Could you come by?" | 55 "Kommen Sie bitte vorbei." | 70 "Würden Sie bitte vorbeikommen?" | 85 "Wir bitten Sie, bei uns vorbeizukommen." / "참석해 주시기 바랍니다."
+  A standard polite form (German Sie, Korean -요, Japanese です/ます) is the everyday polite default, around 50-60, not high formality by itself. Reserve 75 and above for honorific, official or institutional register.
+- friendliness (0 to 100): how warm and close the speaker sounds toward the listener.
+  15 "Your request has been received. Please wait." | 35 "Nice to meet you." | 50 "Hey, want to grab lunch?" | 70 "Komm vorbei!" | 95 "I love you, mom."
+  Casual grammar alone does not make a sentence friendly. Softening particles (Thai นะ, Japanese ね, German doch / mal, a soft Korean -요) raise friendliness by about 5-15 but do not flip the sign of sentiment.
+Round sentiment to the nearest 0.05, and formality and friendliness to the nearest 5.`;
+
+const roundTo = (v: unknown, step: number, lo: number, hi: number, fallback: number) => {
+  const n = typeof v === 'number' && Number.isFinite(v) ? v : fallback;
+  return Math.min(hi, Math.max(lo, Math.round(n / step) * step));
+};
+const tidy = (x: Partial<SentimentScore> | undefined): SentimentScore => ({
+  score: Number(roundTo(x?.score, 0.05, -1, 1, 0).toFixed(2)),
+  friendliness: roundTo(x?.friendliness, 5, 0, 100, 50),
+  formality: roundTo(x?.formality, 5, 0, 100, 50),
+});
 
 const phraseScoreSchema = {
   type: Type.OBJECT,
@@ -40,16 +66,16 @@ const sentimentSchema = {
       type: Type.NUMBER,
       description: 'Overall sentiment score from -1.0 (very negative/hostile/sad) to 1.0 (very positive/joyful/warm), where 0.0 is neutral, factual, or mildly curious.',
     },
-    intimacy: {
+    friendliness: {
       type: Type.NUMBER,
-      description: 'Overall intimacy/closeness score from 0 (distant/stranger) to 100 (deeply personal/affectionate), derived from friendliness and context (not casual grammar alone). Everyday friendly/curious questions are typically 35-55.',
+      description: 'Overall friendliness from 0 (cold/distant) to 100 (warm/close), following the rubric anchors.',
     },
     formality: {
       type: Type.NUMBER,
-      description: 'Overall formality score from 0 (very informal/casual speech) to 100 (very formal/honorific), mapped from the phrase formality scores (-1.0 -> 0, 0.0 -> 50, +1.0 -> 100).',
+      description: 'Overall formality from 0 (very casual) to 100 (honorific/official), following the rubric anchors.',
     },
   },
-  required: ['score', 'intimacy', 'formality'],
+  required: ['score', 'friendliness', 'formality'],
 };
 
 let cachedAiClient: GoogleGenAI | null = null;
@@ -99,7 +125,7 @@ async function startServer() {
     }
 
     if (!text.trim()) {
-      res.json({ score: 0, intimacy: 50, formality: 50 } satisfies SentimentScore);
+      res.json({ score: 0, friendliness: 50, formality: 50 } satisfies SentimentScore);
       return;
     }
 
@@ -108,10 +134,9 @@ async function startServer() {
 - formality (-1.0 informal to 1.0 formal)
 - friendliness (-1.0 unfriendly to 1.0 friendly)
 
-Then, based on those phrase scores and the full sentence context (such as softening particles, greetings, or negation), compute the overall sentence metrics:
-- score (-1.0 to 1.0): 0.0 is neutral, factual, or simple curiosity. Do NOT score everyday questions or casual check-ins as negative unless there are explicit negative/hostile cues.
-- intimacy (0 to 100): Relationship closeness/warmth, separate from informality. 0-25 = distant, 30-55 = casual acquaintance/everyday curiosity, 60-80 = close friend, 85-100 = deeply personal/family/romantic.
-- formality (0 to 100): Map overall formality from -1.0..1.0 onto 0..100.
+Then, based on those phrase scores and the full sentence context (such as softening particles, greetings, or negation), compute the overall sentence metrics score, friendliness and formality.
+
+${RUBRIC}
 
 Text: "${text}"`;
 
@@ -130,22 +155,19 @@ Text: "${text}"`;
                 items: phraseScoreSchema,
               },
               score: sentimentSchema.properties.score,
-              intimacy: sentimentSchema.properties.intimacy,
+              friendliness: sentimentSchema.properties.friendliness,
               formality: sentimentSchema.properties.formality,
             },
-            required: ['phraseScores', 'score', 'intimacy', 'formality'],
-            propertyOrdering: ['phraseScores', 'score', 'intimacy', 'formality'],
+            required: ['phraseScores', 'score', 'friendliness', 'formality'],
+            propertyOrdering: ['phraseScores', 'score', 'friendliness', 'formality'],
           },
           thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
+          seed: SEED,
         },
       });
 
       const parsed = JSON.parse(response.text ?? '{}') as SentimentScore & { phraseScores?: unknown };
-      res.json({
-        score: parsed.score,
-        intimacy: parsed.intimacy,
-        formality: parsed.formality,
-      } satisfies SentimentScore);
+      res.json(tidy(parsed) satisfies SentimentScore);
     } catch (error) {
       console.error('Error analyzing sentiment:', error);
       const { status, message } = getErrorStatusAndMessage(error, 'Failed to analyze sentiment.');
@@ -206,13 +228,13 @@ Text: "${text}"`;
           type: Type.OBJECT,
           properties: {
             formal: { type: Type.STRING, description: `The word for 'Formal' translated into ${targetLanguageName}.` },
-            intimate: { type: Type.STRING, description: `The word for 'Intimate' translated into ${targetLanguageName}.` },
+            friendly: { type: Type.STRING, description: `The word for 'Friendly' translated into ${targetLanguageName}.` },
             negative: { type: Type.STRING, description: `The word for 'Negative' translated into ${targetLanguageName}.` },
             positive: { type: Type.STRING, description: `The word for 'Positive' translated into ${targetLanguageName}.` },
             spoken: { type: Type.STRING, description: `The word for 'Spoken' translated into ${targetLanguageName}.` },
             written: { type: Type.STRING, description: `The word for 'Written' translated into ${targetLanguageName}.` },
           },
-          required: ['formal', 'intimate', 'negative', 'positive', 'spoken', 'written'],
+          required: ['formal', 'friendly', 'negative', 'positive', 'spoken', 'written'],
         },
       },
       required: [
@@ -244,13 +266,12 @@ Text: "${text}"`;
    - sentiment (-1.0 negative to 1.0 positive, 0.0 neutral/curious)
    - formality (-1.0 informal to 1.0 formal)
    - friendliness (-1.0 unfriendly to 1.0 friendly)
-3. Next, using those word/phrase scores together with whole-sentence context (such as softening particles like 'นะ', greetings, or negation), derive the overall metrics for BOTH the original text and the translation:
-   - score (-1.0 to 1.0): 0.0 is neutral, factual, or simple curiosity. Everyday questions, greetings, or softened check-ins (e.g., asking where someone went out of casual curiosity) should be neutral to slightly positive (around 0.0 to 0.2), NOT negative, unless there are explicit hostile/upset cues.
-   - intimacy (0 to 100): Relationship closeness/emotional intimacy, independent of casual grammar. Casual or softened speech alone does NOT mean high intimacy. 0-25 = distant/stranger, 30-55 = casual acquaintance / friendly everyday chat / mild curiosity, 60-80 = close friend, 85-100 = deeply personal/affectionate/family.
-   - formality (0 to 100): Map overall formality from -1.0..1.0 onto 0..100 (0 = very casual, 50 = standard polite, 100 = formal/honorific).
-   - style: either 'SPOKEN' or 'WRITTEN'.
+3. Next, using those word/phrase scores together with whole-sentence context (such as softening particles like 'นะ', greetings, or negation), derive the overall metrics score, friendliness and formality for BOTH the original text and the translation, and decide whether each is 'SPOKEN' or 'WRITTEN'.
+
+${RUBRIC}
+
 4. Analyze the ORIGINAL text for any subtle nuances, culturally specific phrases, ambiguities, or emotional undertones that might be lost or altered in a direct translation. Provide a short, one-sentence explanation of this key nuance IN ${targetLanguageName}. If no significant nuance is found, return null for the nuance explanation.
-5. Translate the following UI labels into ${targetLanguageName}: 'Formal', 'Intimate', 'Negative', 'Positive', 'Spoken', 'Written'.
+5. Translate the following UI labels into ${targetLanguageName}: 'Formal', 'Friendly', 'Negative', 'Positive', 'Spoken', 'Written'.
 
 Provide your response strictly as a JSON object that conforms to the provided schema. Do not include any extra text or formatting.
 Original Text: "${text}"`;
@@ -264,6 +285,7 @@ Original Text: "${text}"`;
           responseMimeType: 'application/json',
           responseSchema: schema,
           thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
+          seed: SEED,
         },
       });
 
@@ -275,8 +297,8 @@ Original Text: "${text}"`;
         translation: parsed.translation,
         sourceStyle: parsed.sourceStyle,
         translatedStyle: parsed.translatedStyle,
-        sourceSentiment: parsed.sourceSentiment,
-        translatedSentiment: parsed.translatedSentiment,
+        sourceSentiment: tidy(parsed.sourceSentiment),
+        translatedSentiment: tidy(parsed.translatedSentiment),
         uiTranslations: parsed.uiTranslations,
         nuance: parsed.nuance || undefined,
       } satisfies TranslationResponse);
@@ -336,6 +358,7 @@ Provide your response as a JSON object.`;
             required: ['explanation', 'emojis'],
           },
           thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
+          seed: SEED,
         },
       });
 

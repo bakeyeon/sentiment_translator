@@ -1,6 +1,6 @@
 export interface SentimentScore {
   score: number; // A value from -1.0 (negative) to 1.0 (positive)
-  intimacy: number; // A value from 0 (distant) to 100 (intimate)
+  friendliness: number; // A value from 0 (cold/distant) to 100 (warm/close)
   formality: number; // A value from 0 (informal) to 100 (formal)
 }
 
@@ -20,7 +20,7 @@ export interface EmojiSuggestion {
 
 export interface UITranslations {
   formal: string;
-  intimate: string;
+  friendly: string;
   negative: string;
   positive: string;
   spoken: string;

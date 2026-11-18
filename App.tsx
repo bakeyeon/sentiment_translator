@@ -33,10 +33,10 @@ const App: React.FC = () => {
     }
     setIsTranslatedAnalyzing(true);
      try {
-        const { score, intimacy, formality } = await getSentiment(text);
-        setTranslatedSentiment({ score, intimacy, formality, emoji: getEmojiForScore(score) });
+        const { score, friendliness, formality } = await getSentiment(text);
+        setTranslatedSentiment({ score, friendliness, formality, emoji: getEmojiForScore(score) });
     } catch (e) {
-        setTranslatedSentiment({ score: 0, intimacy: 50, formality: 50, emoji: getEmojiForScore(0) });
+        setTranslatedSentiment({ score: 0, friendliness: 50, formality: 50, emoji: getEmojiForScore(0) });
     } finally {
         setIsTranslatedAnalyzing(false);
     }

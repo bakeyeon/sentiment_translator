@@ -7,26 +7,33 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - Video Overview of 2 Papers: https://youtu.be/dYcz4MZNst4
 - Medium Post: Can We Translate Our Sentiments? (https://medium.com/gopenai/can-we-translate-our-sentiments-140c55822ead?sharedUserId=kaiwritesornot)
 
+## What's new in v2.0.0
+- **SFF axes:** the map's vertical axis is now **Friendliness** instead of intimacy, so the app follows SFF (Sentiment-Formality-Friendliness).
+- **Scoring rubric:** every scoring prompt shares one rubric with anchor sentences in several languages. For example, German *Sie* now counts as the everyday polite default, not as high formality.
+- **More consistent scores:** a fixed seed, and the server rounds scores (sentiment to 0.05, the other axes to 5). In tests on Gemini 3.5 Flash-Lite, repeated runs of the same sentence now return the same scores; before, formality moved by up to 15 points.
+- **Model switch:** set `GEMINI_MODEL` to run the app on another Gemini model (default: `gemini-4-hydrogen`).
+- How the anchors were calibrated and cross-checked is in [docs/scoring-rubric.md](docs/scoring-rubric.md).
+
 ## Demo
 [![Sentiment Translator demo: switching the target language to Korean and opening the sentiment map](demo/preview.gif)](https://youtu.be/GvVGA-x60XE)
 
-▶️ Click the GIF or [watch the full demo on YouTube (2:20)](https://youtu.be/GvVGA-x60XE) to see it bigger: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean.
+▶️ Click the GIF or [watch the full demo on YouTube (2:20)](https://youtu.be/GvVGA-x60XE) to see it bigger: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean. The video shows v1, with intimacy on the vertical axis.
 
 > **Note:** This is a concept video. The prototype's map is an early form of what I later developed into the SFF (Sentiment-Formality-Friendliness) framework: it plots positive–negative sentiment, intimacy and formality. To read more about SFF, see my latest paper, [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
 
 ## Reading the sentiment map
-<img src="demo/sentiment-map.png" width="300" align="right" alt="Sentiment map for 'Komm doch mal vorbei!' translated into English: a hollow ring and a filled dot sit close together, light green, in the upper-left area; the footer reads +0.40, Intimate: 55, Formal: 30, with a slightly smiling emoji below.">
+<img src="demo/sentiment-map.png" width="300" align="right" alt="Sentiment map for 'Komm doch mal vorbei!' translated into English: a hollow ring and a filled dot sit close together, light green, in the upper-left area; the footer reads +0.30, Friendly: 70, Formal: 20, with a slightly smiling emoji below.">
 
 Click the emoji in the corner of either text box to open its map.
 
 - **Colour:** the closer to green, the more positive the sentence; red is negative, yellow is neutral. The bar at the top runs from −1 to +1.
-- **Up:** the more intimate (close, friendly) the tone, the higher the dot.
+- **Up:** the friendlier and warmer the speaker sounds toward the listener, the higher the dot.
 - **Right:** the more formal or polite the tone, the further right the dot.
 - **Two points:** on the translation's map, the hollow ring is the original and the filled dot is the translation. The dashed line between them shows how far the feeling moved in translation.
-- **Numbers:** the footer gives the exact scores: sentiment (−1 to +1), intimacy (0–100) and formality (0–100).
+- **Numbers:** the footer gives the exact scores: sentiment (−1 to +1), friendliness (0–100) and formality (0–100).
 - **Emoji:** the emoji is the one whose sentiment score is closest to the sentence's score, using scores from the [Emoji Sentiment Ranking](https://kt.ijs.si/data/Emoji_sentiment_ranking/).
 
-In the example, *Komm doch mal vorbei!* is translated into English. Both versions stay warm, fairly intimate and casual, so the two points nearly overlap, and the score of +0.40 is matched to 🙂.
+In the example, *Komm doch mal vorbei!* is translated into English. Both versions stay warm, friendly and casual, so the two points nearly overlap, and the score of +0.30 is matched to 🙂.
 
 <br clear="right">
 

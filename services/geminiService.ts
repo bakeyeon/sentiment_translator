@@ -29,7 +29,7 @@ async function postJson<T>(url: string, payload: Record<string, unknown>): Promi
  */
 export const getSentiment = async (text: string): Promise<SentimentScore> => {
   if (!text.trim()) {
-    return { score: 0, intimacy: 50, formality: 50 };
+    return { score: 0, friendliness: 50, formality: 50 };
   }
   return postJson<SentimentScore>('/api/gemini/sentiment', { text });
 };
