@@ -10,7 +10,7 @@ If you have a research prototype, you can introduce it the same way: a clear, na
 |---|---|---|
 | Drive and record the app | [Playwright](https://playwright.dev/) (Node.js) | Opens the app at phone size (390×844, touch) and taps, types and scrolls from a script |
 | Sharp screen capture | Chrome DevTools Protocol screencast | Captures frames at 2× pixel density (Playwright's built-in video is low resolution) |
-| Narration | [edge-tts](https://github.com/rany2/edge-tts) (Python) | Reads the script aloud with a natural neural voice (Ava) |
+| Narration | [edge-tts](https://github.com/rany2/edge-tts) (Python) | Reads the script aloud with a natural neural voice (Ava). For commercial projects, use a licensed TTS service such as Azure AI Speech, Google Cloud Text-to-Speech, Amazon Polly or ElevenLabs |
 | Cards, captions, phone frame | HTML/CSS rendered to PNG | Designed like a web page, matching the app's glass style, and captured as transparent images |
 | Composition | [ffmpeg](https://ffmpeg.org/) | Layers the background, phone video, cards, captions and a live zoom of the open map, with fades |
 | Sound effects and music | Python (numpy, scipy) | Synthesises tap, whoosh and ding sounds and a soft music bed, and lowers the music under the voice |
