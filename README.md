@@ -7,6 +7,13 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - Video Overview of 2 Papers: https://youtu.be/dYcz4MZNst4
 - Medium Post: Can We Translate Our Sentiments? (https://medium.com/gopenai/can-we-translate-our-sentiments-140c55822ead?sharedUserId=kaiwritesornot)
 
+## Demo
+[![Sentiment Translator demo: switching the target language to Korean and opening the sentiment map](demo/preview.gif)](https://youtu.be/on5TFSEBs4Q)
+
+▶️ Click the GIF or [watch the full demo on YouTube (2:20)](https://youtu.be/on5TFSEBs4Q) to see it bigger: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean.
+
+> **Note:** This is a concept video. The SFF map is an illustrative visualisation of the model's estimates, not a precise implementation of SFF (Sentiment-Formality-Friendliness).
+
 ## Limitations
 - Subjectivity of Survey Data: As the study relies on surveys of proficient language users, the data is inherently subject to individual interpretation and personal perception of emotional nuances.
 - Small Sample Size and Robustness: With $N=35$ for Survey 1 and $N=112$ for Survey 2, the relatively small sample sizes may limit the statistical robustness and the generalizability of the findings to a broader population.
