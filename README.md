@@ -7,6 +7,12 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - Video Overview of 2 Papers: https://youtu.be/dYcz4MZNst4
 - Medium Post: Can We Translate Our Sentiments? (https://medium.com/gopenai/can-we-translate-our-sentiments-140c55822ead?sharedUserId=kaiwritesornot)
 
+## What's new in v2.0.1
+UI update only; scoring and the API are unchanged.
+- **Light and dark mode:** a sun/moon button in the top-right corner. It follows your system setting at first and remembers your choice.
+- **Softer look:** a subtle colour gradient in the background, and frosted-glass panels.
+- **Logo:** a new logo mark (a tiny sentiment map) and wordmark, also used as the browser-tab icon.
+
 ## What's new in v2.0.0
 - **SFF axes:** the map's vertical axis is now **Friendliness** instead of intimacy, so the app follows SFF (Sentiment-Formality-Friendliness).
 - **Scoring rubric:** every scoring prompt shares one rubric with anchor sentences in several languages. For example, German *Sie* now counts as the everyday polite default, not as high formality.
