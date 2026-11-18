@@ -28,6 +28,8 @@ UI update only; scoring and the API are unchanged.
 
 ▶️ Click the GIF or [watch the full demo on YouTube (1:58)](https://youtu.be/pZkeuCs8pf8) to see it bigger. It runs the app on a phone: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean, with narration and enlarged sentiment maps.
 
+🎬 The demo video was made with [Claude Code](https://claude.com/claude-code), without a designer or video editor. The recording, cards, narration, sound and composition are all scripted. To make one like it for your own research prototype, see [docs/demo-video.md](docs/demo-video.md).
+
 > **Note:** This is a concept video of v2. The prototype's map is an early form of the SFF (Sentiment-Formality-Friendliness) framework: it plots positive–negative sentiment, friendliness and formality. Earlier versions used intimacy instead of friendliness. To read more about SFF, see my latest paper, [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
 
 ## Reading the sentiment map
