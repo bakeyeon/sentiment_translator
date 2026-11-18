@@ -12,7 +12,23 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 
 ▶️ Click the GIF or [watch the full demo on YouTube (2:20)](https://youtu.be/on5TFSEBs4Q) to see it bigger: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean.
 
-> **Note:** This is a concept video. The SFF map is an illustrative visualisation of the model's estimates, not a precise implementation of SFF (Sentiment-Formality-Friendliness). To read more about SFF, see my latest paper, [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
+> **Note:** This is a concept video. The prototype's map is an early form of what I later developed into the SFF (Sentiment-Formality-Friendliness) framework: it plots positive–negative sentiment, intimacy and formality. To read more about SFF, see my latest paper, [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
+
+## Reading the sentiment map
+<img src="demo/sentiment-map.png" width="300" align="right" alt="Sentiment map for 'Komm doch mal vorbei!' translated into English: a hollow ring and a filled dot sit close together, light green, in the upper-left area; the footer reads +0.40, Intimate: 55, Formal: 30, with a slightly smiling emoji below.">
+
+Click the emoji in the corner of either text box to open its map.
+
+- **Colour:** the closer to green, the more positive the sentence; red is negative, yellow is neutral. The bar at the top runs from −1 to +1.
+- **Up:** the more intimate (close, friendly) the tone, the higher the dot.
+- **Right:** the more formal or polite the tone, the further right the dot.
+- **Two points:** on the translation's map, the hollow ring is the original and the filled dot is the translation. The dashed line between them shows how far the feeling moved in translation.
+- **Numbers:** the footer gives the exact scores: sentiment (−1 to +1), intimacy (0–100) and formality (0–100).
+- **Emoji:** the emoji is the one whose sentiment score is closest to the sentence's score, using scores from the [Emoji Sentiment Ranking](https://kt.ijs.si/data/Emoji_sentiment_ranking/).
+
+In the example, *Komm doch mal vorbei!* is translated into English. Both versions stay warm, fairly intimate and casual, so the two points nearly overlap, and the score of +0.40 is matched to 🙂.
+
+<br clear="right">
 
 ## Limitations
 - Subjectivity of Survey Data: As the study relies on surveys of proficient language users, the data is inherently subject to individual interpretation and personal perception of emotional nuances.
