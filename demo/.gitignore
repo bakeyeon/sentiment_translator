@@ -11,3 +11,7 @@ cal_run*.txt
 cal_missing*.txt
 rub_run*.txt
 calibration.json
+mobile/voice/
+mobile/raw/
+mobile/build/
+mobile/api-cache.json

@@ -24,11 +24,11 @@ UI update only; scoring and the API are unchanged.
 📐 **About SFF:** the full scoring rubric, axis definitions and calibration are in [docs/scoring-rubric.md](docs/scoring-rubric.md). For the SFF (Sentiment-Formality-Friendliness) concept itself, see my paper [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
 
 ## Demo
-[![Sentiment Translator demo: switching the target language to Korean and opening the sentiment map](demo/preview.gif)](https://youtu.be/GvVGA-x60XE)
+[![Sentiment Translator demo on a phone: the sentiment map for a Thai sentence opens, and a card beside the phone shows it enlarged with a legend](demo/preview.gif)](https://youtu.be/pZkeuCs8pf8)
 
-▶️ Click the GIF or [watch the full demo on YouTube (2:20)](https://youtu.be/GvVGA-x60XE) to see it bigger: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean. The video shows v1, with intimacy on the vertical axis.
+▶️ Click the GIF or [watch the full demo on YouTube (1:58)](https://youtu.be/pZkeuCs8pf8) to see it bigger. It runs the app on a phone: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean, with narration and enlarged sentiment maps.
 
-> **Note:** This is a concept video. The prototype's map is an early form of what I later developed into the SFF (Sentiment-Formality-Friendliness) framework: it plots positive–negative sentiment, intimacy and formality. To read more about SFF, see my latest paper, [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
+> **Note:** This is a concept video of v2. The prototype's map is an early form of the SFF (Sentiment-Formality-Friendliness) framework: it plots positive–negative sentiment, friendliness and formality. Earlier versions used intimacy instead of friendliness. To read more about SFF, see my latest paper, [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
 
 ## Reading the sentiment map
 <img src="demo/sentiment-map.png" width="300" align="right" alt="Sentiment map for 'Komm doch mal vorbei!' translated into English: a hollow ring and a filled dot sit close together, light green, in the upper-left area; the footer reads +0.30, Friendly: 70, Formal: 20, with a slightly smiling emoji below.">

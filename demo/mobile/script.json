@@ -1,0 +1,20 @@
+{
+  "voice": "en-US-AvaNeural",
+  "lines": {
+    "intro1":   { "say": "Meet Sentiment Translator, a prototype from my research.", "cap": "Meet Sentiment Translator, a prototype from my research." },
+    "intro2":   { "say": "It translates a sentence, and checks whether its feeling survived the trip.", "cap": "It translates a sentence, and checks whether its feeling survived the trip." },
+    "thai":     { "say": "First, Thai. The particle na softens a question.", "cap": "First, Thai. The particle นะ (na) softens a question." },
+    "nuance":   { "say": "The Nuance Analysis explains what a literal translation would lose.", "cap": "Nuance Analysis explains what a literal translation would lose." },
+    "map1":     { "say": "Tap the emoji to open the sentiment map.", "cap": "Tap the emoji to open the sentiment map." },
+    "axes":     { "say": "Colour shows sentiment. Higher is friendlier, and further right is more formal.", "cap": "Colour shows sentiment. Higher is friendlier; further right is more formal." },
+    "map2":     { "say": "On the translation's map, the dashed line shows how far the feeling moved.", "cap": "On the translation's map, the dashed line shows how far the feeling moved." },
+    "german":   { "say": "Next, German. Doch mal makes an invitation warm and casual.", "cap": "Next, German. doch mal makes an invitation warm and casual." },
+    "mapb":     { "say": "Let's compare the maps again.", "cap": "Let's compare the maps again." },
+    "japanese": { "say": "Then Japanese. Chotto and ne soften a request.", "cap": "Then Japanese. ちょっと and ね (ne) soften a request." },
+    "mapc":     { "say": "And once more on the map.", "cap": "And once more on the map." },
+    "korean1":  { "say": "Now, switch the target language to Korean...", "cap": "Now, switch the target language to Korean…" },
+    "korean2":  { "say": "...and the whole analysis speaks Korean, too.", "cap": "…and the whole analysis speaks Korean, too." },
+    "rubric":   { "say": "Every score follows a shared rubric for sentiment, formality and friendliness. It's documented in the repository.", "cap": "Every score follows a shared SFF rubric, documented in the repository." },
+    "outro":    { "say": "Built on two of my papers on modal particles and emoji. Thanks for watching!", "cap": "Built on two of my papers on modal particles and emoji. Thanks for watching!" }
+  }
+}
