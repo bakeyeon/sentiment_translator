@@ -8,9 +8,9 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - Medium Post: Can We Translate Our Sentiments? (https://medium.com/gopenai/can-we-translate-our-sentiments-140c55822ead?sharedUserId=kaiwritesornot)
 
 ## Demo
-[![Sentiment Translator demo: switching the target language to Korean and opening the sentiment map](demo/preview.gif)](https://youtu.be/on5TFSEBs4Q)
+[![Sentiment Translator demo: switching the target language to Korean and opening the sentiment map](demo/preview.gif)](https://youtu.be/GvVGA-x60XE)
 
-▶️ Click the GIF or [watch the full demo on YouTube (2:20)](https://youtu.be/on5TFSEBs4Q) to see it bigger: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean.
+▶️ Click the GIF or [watch the full demo on YouTube (2:20)](https://youtu.be/GvVGA-x60XE) to see it bigger: Thai *นะ*, German *doch mal* and Japanese *ね* translated into English, then the same analysis in Korean.
 
 > **Note:** This is a concept video. The prototype's map is an early form of what I later developed into the SFF (Sentiment-Formality-Friendliness) framework: it plots positive–negative sentiment, intimacy and formality. To read more about SFF, see my latest paper, [The Grue Divide: When Cognitive Accuracy Doesn't Predict Affective Alignment](https://aclanthology.org/2026.pandora-1.2/) (PANDORA @ EMNLP 2026).
 

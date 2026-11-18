@@ -2,3 +2,8 @@ raw/
 frames/
 music.wav
 sentiment-translator-demo.mp4
+voice/
+mix.wav
+events.json
+map_runs.json
+*.mp4
