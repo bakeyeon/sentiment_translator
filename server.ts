@@ -99,6 +99,35 @@ const getAiClient = () => {
   return cachedAiClient;
 };
 
+// If the main model is busy (503), over quota (429), erroring (500) or slower than GEMINI_TIMEOUT_MS,
+// retry the same request once on the fallback model. The answering model is sent back in X-Gemini-Model.
+const FALLBACK_MODEL = process.env.GEMINI_FALLBACK_MODEL || 'gemini-3.5-flash-lite';
+const PRIMARY_TIMEOUT_MS = Number(process.env.GEMINI_TIMEOUT_MS) || 12000;
+type GenerateParams = Omit<Parameters<GoogleGenAI['models']['generateContent']>[0], 'model'>;
+
+const generate = async (params: GenerateParams, res: Response) => {
+  const ai = getAiClient();
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), PRIMARY_TIMEOUT_MS);
+  try {
+    const response = await ai.models.generateContent({ ...params, model: MODEL_NAME, config: { ...params.config, abortSignal: ctrl.signal } });
+    res.setHeader('X-Gemini-Model', MODEL_NAME);
+    return response;
+  } catch (error) {
+    const status = (error as { status?: number } | null)?.status;
+    const timedOut = ctrl.signal.aborted;
+    if (MODEL_NAME === FALLBACK_MODEL || !(timedOut || status === 429 || status === 500 || status === 503)) {
+      throw error;
+    }
+    console.warn(`[fallback] ${MODEL_NAME} ${timedOut ? `took longer than ${PRIMARY_TIMEOUT_MS} ms` : `returned ${status}`}; retrying on ${FALLBACK_MODEL}`);
+    const response = await ai.models.generateContent({ ...params, model: FALLBACK_MODEL });
+    res.setHeader('X-Gemini-Model', FALLBACK_MODEL);
+    return response;
+  } finally {
+    clearTimeout(timer);
+  }
+};
+
 const getErrorStatusAndMessage = (error: unknown, fallbackMessage: string): { status: number; message: string } => {
   if (error && typeof error === 'object') {
     const errObj = error as { status?: number; message?: string };
@@ -141,9 +170,7 @@ ${RUBRIC}
 Text: "${text}"`;
 
     try {
-      const ai = getAiClient();
-      const response = await ai.models.generateContent({
-        model: MODEL_NAME,
+      const response = await generate({
         contents: prompt,
         config: {
           responseMimeType: 'application/json',
@@ -164,7 +191,7 @@ Text: "${text}"`;
           thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
           seed: SEED,
         },
-      });
+      }, res);
 
       const parsed = JSON.parse(response.text ?? '{}') as SentimentScore & { phraseScores?: unknown };
       res.json(tidy(parsed) satisfies SentimentScore);
@@ -277,9 +304,7 @@ Provide your response strictly as a JSON object that conforms to the provided sc
 Original Text: "${text}"`;
 
     try {
-      const ai = getAiClient();
-      const response = await ai.models.generateContent({
-        model: MODEL_NAME,
+      const response = await generate({
         contents: prompt,
         config: {
           responseMimeType: 'application/json',
@@ -287,7 +312,7 @@ Original Text: "${text}"`;
           thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
           seed: SEED,
         },
-      });
+      }, res);
 
       const parsed = JSON.parse(response.text ?? '{}') as TranslationResponse & {
         sourcePhraseScores?: unknown;
@@ -336,9 +361,7 @@ Translation: "${translatedText}"
 Provide your response as a JSON object.`;
 
     try {
-      const ai = getAiClient();
-      const response = await ai.models.generateContent({
-        model: MODEL_NAME,
+      const response = await generate({
         contents: prompt,
         config: {
           responseMimeType: 'application/json',
@@ -360,7 +383,7 @@ Provide your response as a JSON object.`;
           thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
           seed: SEED,
         },
-      });
+      }, res);
 
       const parsed = JSON.parse(response.text ?? '{}') as EmojiSuggestion;
       res.json(parsed);

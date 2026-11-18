@@ -12,6 +12,7 @@ Vibe coded a prototype based on my previous papers on the topic of sentiments an
 - **Scoring rubric:** every scoring prompt shares one rubric with anchor sentences in several languages. For example, German *Sie* now counts as the everyday polite default, not as high formality.
 - **More consistent scores:** a fixed seed, and the server rounds scores (sentiment to 0.05, the other axes to 5). In tests on Gemini 3.5 Flash-Lite, repeated runs of the same sentence now return the same scores; before, formality moved by up to 15 points.
 - **Model switch:** set `GEMINI_MODEL` to run the app on another Gemini model (default: `gemini-4-hydrogen`).
+- **Automatic fallback:** if Gemini 4 Hydrogen is busy (503), over quota (429), erroring (500) or slower than 12 seconds, the request is retried once on Gemini 3.5 Flash-Lite. Change these with `GEMINI_FALLBACK_MODEL` and `GEMINI_TIMEOUT_MS`. The `X-Gemini-Model` response header says which model answered.
 - How the anchors were calibrated and cross-checked is in [docs/scoring-rubric.md](docs/scoring-rubric.md).
 
 ## Demo

@@ -125,3 +125,5 @@ node demo/compare_model.mjs gemini-3.5-flash-lite "Kommen Sie bitte vorbei." "Ko
 # run the whole app on another model
 GEMINI_MODEL=gemini-3.5-flash-lite npm run dev
 ```
+
+The app falls back from Gemini 4 Hydrogen to Gemini 3.5 Flash-Lite when Hydrogen returns 503, 429 or 500, or takes longer than 12 seconds. Because Flash-Lite was the calibration model, fallback answers follow the same rubric. Settings: `GEMINI_FALLBACK_MODEL` and `GEMINI_TIMEOUT_MS`.
