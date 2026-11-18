@@ -7,6 +7,7 @@ import type { Sentiment, Language, EmojiSuggestion, UITranslations, TextStyle } 
 import { SUPPORTED_LANGUAGES } from './constants';
 import { getEmojiForScore } from './emoji';
 import { EmojiSuggestionBox } from './components/EmojiSuggestionBox';
+import { Wordmark } from './components/Logo';
 
 // Light / dark switch: remembers the choice; the initial theme is set in index.html before React loads.
 const ThemeToggle: React.FC = () => {
@@ -165,11 +166,9 @@ const App: React.FC = () => {
     <div className="min-h-screen text-slate-800 dark:text-white font-sans p-4 sm:p-8 flex flex-col items-center">
       <div className="w-full max-w-4xl mx-auto">
         <ThemeToggle />
-        <header className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 dark:from-cyan-400 to-teal-500 dark:to-teal-200">
-            Sentiment Translator
-          </h1>
-          <p className="mt-2 text-lg text-slate-500 dark:text-gray-300">
+        <header className="text-center mb-8 pt-8 sm:pt-0">
+          <Wordmark />
+          <p className="mt-3 text-lg text-slate-500 dark:text-gray-300">
             Preserving cultural and emotional nuance in translation.
           </p>
         </header>
